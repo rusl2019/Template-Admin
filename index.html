@@ -14,60 +14,63 @@
     integrity="sha384-Ccfn4Q+lSKOnc8aSEmH6a7E86lIPrWNrlksJJtb0Qwehi6Fh15cBiKczAAR1N/df" crossorigin="anonymous">
   <style>
     :root {
-      --bs-primary: #465fff;
-      --bs-secondary: #6c757d;
-      --bs-success: #198754;
-      --bs-info: #0dcaf0;
-      --bs-warning: #ffc107;
-      --bs-danger: #dc3545;
-      --bs-light: #f8f9fa;
-      --bs-dark: #343a40;
+      --bs-primary: #4f46e5;
+      --bs-secondary: #6b7280;
+      --bs-success: #22c55e;
+      --bs-info: #06b6d4;
+      --bs-warning: #eab308;
+      --bs-danger: #ef4444;
+      --bs-light: #f9fafb;
+      --bs-dark: #111827;
+      --bs-font-sans-serif: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --bs-body-font-size: 0.95rem;
+      --bs-body-line-height: 1.5;
+      --bs-transition: all 0.3s ease-in-out;
     }
 
     body {
-      font-family: 'Arial', sans-serif;
-      background-color: #e4e7ec;
-      transition: background-color 0.3s, color 0.3s;
+      font-family: var(--bs-font-sans-serif);
+      background-color: #f3f4f6;
+      transition: var(--bs-transition);
+      margin: 0;
     }
 
     body.dark-mode {
-      background-color: #101828;
-      color: #ffffff;
+      background-color: #0f172a;
+      color: #f3f4f6;
     }
 
     .sidebar {
       min-height: 100vh;
       background-color: #ffffff;
-      padding-top: 20px;
+      padding: 1.5rem 0;
       position: fixed;
-      width: 250px;
-      transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+      width: 260px;
+      transition: var(--bs-transition);
       z-index: 1000;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
     }
 
     .sidebar.collapsed {
-      width: 60px;
-      /* Reduced width for collapsed state */
+      width: 70px;
     }
 
-    .sidebar.collapsed a span {
+    .sidebar.collapsed a span:not(.tooltip-text) {
       display: none;
-      /* Hide text labels in collapsed state */
     }
 
     .sidebar.collapsed h4 {
       font-size: 0;
-      /* Hide header text in collapsed state */
     }
 
     .sidebar.collapsed h4::before {
       content: '\f6e3';
-      font-family: 'Font Awesome 7 Free';
+      font-family: 'Font Awesome 6 Free';
       font-weight: 900;
       font-size: 1.5rem;
       display: block;
       text-align: center;
-      color: #000000;
+      color: var(--bs-dark);
     }
 
     body.dark-mode .sidebar.collapsed h4::before {
@@ -76,180 +79,196 @@
 
     @media (max-width: 768px) {
       .sidebar {
-        transform: translateX(-250px);
-        /* Hidden by default in mobile mode */
+        transform: translateX(-260px);
       }
 
       .sidebar.active {
         transform: translateX(0);
-        width: 250px;
-        /* Full width when active in mobile */
+        width: 260px;
       }
 
       .sidebar.active a span {
         display: inline;
-        /* Show text labels when active in mobile */
       }
 
       .sidebar.active h4 {
-        font-size: 1.5rem;
-        /* Show header text when active */
+        font-size: 1.25rem;
       }
 
       .sidebar.active h4::before {
         display: none;
-        /* Remove icon in full sidebar mode */
       }
     }
 
     .sidebar a {
-      color: #000000;
-      padding: 15px;
-      display: block;
+      color: var(--bs-dark);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
       text-decoration: none;
+      transition: var(--bs-transition);
+      position: relative;
     }
 
     .sidebar a:hover {
-      background-color: #f8f9fa;
+      background-color: var(--bs-light);
+      color: var(--bs-primary);
     }
 
     .sidebar a.active {
-      background-color: #ecf3ff;
-      color: #465fff;
-      border-left: 4px solid #465fff;
+      background-color: color-mix(in srgb, var(--bs-primary) 10%, transparent);
+      color: var(--bs-primary);
+      border-left: 4px solid var(--bs-primary);
+    }
+
+    .sidebar a .tooltip-text {
+      display: none;
+      position: absolute;
+      left: 100%;
+      margin-left: 10px;
+      background-color: var(--bs-dark);
+      color: #ffffff;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      z-index: 1000;
+      font-size: 0.85rem;
+    }
+
+    .sidebar.collapsed a:hover .tooltip-text {
+      display: block;
+    }
+
+    body.dark-mode .sidebar {
+      background-color: #1f2a44;
+    }
+
+    body.dark-mode .sidebar a {
+      color: #d1d5db;
+    }
+
+    body.dark-mode .sidebar a:hover {
+      background-color: #374151;
+      color: #a5b4fc;
     }
 
     body.dark-mode .sidebar a.active {
-      background-color: color-mix(in oklab, #465fff 12%, transparent);
-      color: #7592ff;
-      border-left: 4px solid #7592ff;
+      background-color: color-mix(in srgb, var(--bs-primary) 15%, transparent);
+      color: #a5b4fc;
+      border-left: 4px solid #a5b4fc;
     }
 
     .content {
-      margin-left: 250px;
-      padding: 20px;
-      transition: margin-left 0.3s ease-in-out;
+      margin-left: 260px;
+      padding: 1.5rem;
+      transition: var(--bs-transition);
       min-height: 100vh;
-      /* Ensure content stretches to accommodate footer */
       display: flex;
       flex-direction: column;
     }
 
     .content.collapsed {
-      margin-left: 60px;
-      /* Adjusted for collapsed sidebar */
+      margin-left: 70px;
     }
 
     @media (max-width: 768px) {
       .content {
         margin-left: 0;
-        /* No margin in mobile mode */
       }
 
       .content.collapsed {
         margin-left: 0;
-        /* No margin when sidebar is hidden */
       }
     }
 
     .navbar {
       background-color: #ffffff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       z-index: 999;
-      border-radius: 15px;
-      margin: 10px;
+      border-radius: 12px;
+      margin: 1rem;
+      padding: 0.75rem;
     }
 
     body.dark-mode .navbar {
-      background-color: #1d2939;
-      color: #ffffff;
+      background-color: #1f2a44;
+      color: #d1d5db;
     }
 
     body.dark-mode .navbar .navbar-brand,
     body.dark-mode .navbar .nav-link,
     body.dark-mode .navbar .dropdown-item {
-      color: #ffffff;
+      color: #d1d5db;
     }
 
     body.dark-mode .dropdown-menu {
-      background-color: #1d2939;
-      color: #ffffff;
+      background-color: #1f2a44;
+      border: 1px solid #374151;
     }
 
     body.dark-mode .dropdown-menu .dropdown-item:hover {
-      background-color: #1d2939;
+      background-color: #374151;
     }
 
     body.dark-mode .dropdown-divider {
-      border-color: #ffffff33;
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
     .card {
       border: none;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
     }
 
     body.dark-mode .card {
-      background-color: #1d2939;
-      color: #ffffff;
-    }
-
-    body.dark-mode .sidebar {
-      background-color: #1d2939;
-      color: #ffffff;
-    }
-
-    body.dark-mode .sidebar a {
-      color: #ffffff;
-    }
-
-    body.dark-mode .sidebar a:hover {
-      background-color: color-mix(in oklab, #465fff 12%, transparent);
-      color: #7592ff;
+      background-color: #1f2a44;
+      color: #d1d5db;
     }
 
     body.dark-mode .table {
-      --bs-table-color: #fff;
-      --bs-table-bg: #1d2939;
+      --bs-table-color: #d1d5db;
+      --bs-table-bg: #1f2a44;
+      --bs-table-border-color: #374151;
     }
 
-    body.dark-mode .form-control {
-      color: #fff;
-      background-color: #1d2939;
-    }
-
+    body.dark-mode .form-control,
     body.dark-mode .form-select {
-      color: #fff;
-      background-color: #1d2939;
+      color: #d1d5db;
+      background-color: #374151;
+      border-color: #4b5563;
     }
 
     .table-responsive {
-      border-radius: 10px;
+      border-radius: 12px;
+      overflow: hidden;
     }
 
     .form-check-input:checked {
-      background-color: #465fff;
-      border-color: #465fff;
+      background-color: var(--bs-primary);
+      border-color: var(--bs-primary);
     }
 
     .footer {
       margin-top: auto;
-      /* Push footer to bottom of content */
-      padding: 10px 0;
+      padding: 1rem 0;
       text-align: center;
-      color: #6c757d;
+      color: var(--bs-secondary);
       font-size: 0.9rem;
     }
 
     body.dark-mode .footer {
-      color: #ffffff;
+      color: #9ca3af;
     }
 
     @media (max-width: 768px) {
       .navbar {
-        margin: 5px;
-        border-radius: 10px;
+        margin: 0.5rem;
+        border-radius: 8px;
       }
     }
 
@@ -259,76 +278,87 @@
       }
 
       .content {
-        padding: 10px;
+        padding: 0.75rem;
       }
 
       .footer {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
       }
     }
 
     .btn-outline-primary {
-      --bs-btn-color: #465fff;
-      --bs-btn-border-color: #465fff;
+      --bs-btn-color: var(--bs-primary);
+      --bs-btn-border-color: var(--bs-primary);
       --bs-btn-hover-color: #fff;
-      --bs-btn-hover-bg: #465fff;
-      --bs-btn-hover-border-color: #465fff;
-      --bs-btn-focus-shadow-rgb: 13, 110, 253;
+      --bs-btn-hover-bg: var(--bs-primary);
+      --bs-btn-hover-border-color: var(--bs-primary);
       --bs-btn-active-color: #fff;
-      --bs-btn-active-bg: #465fff;
-      --bs-btn-active-border-color: #465fff;
-      --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-      --bs-btn-disabled-color: #465fff;
-      --bs-btn-disabled-bg: transparent;
-      --bs-btn-disabled-border-color: #465fff;
-      --bs-gradient: none;
+      --bs-btn-active-bg: var(--bs-primary);
+      --bs-btn-active-border-color: var(--bs-primary);
     }
 
     .active>.page-link,
     .page-link.active {
-      z-index: 3;
-      color: #465fff;
-      background-color: color-mix(in oklab, #465fff 8%, transparent);
-      border-color: #465fff;
+      color: #fff;
+      background-color: var(--bs-primary);
+      border-color: var(--bs-primary);
     }
 
     .bg-success {
-      --bs-bg-opacity: 1;
-      color: #027a48;
-      background-color: #ecfdf3 !important;
+      color: #15803d;
+      background-color: #dcfce7 !important;
     }
 
     .bg-danger {
-      --bs-bg-opacity: 1;
-      color: #b42318;
-      background-color: #fef3f2 !important;
+      color: #b91c1c;
+      background-color: #fee2e2 !important;
     }
 
     .bg-warning {
-      --bs-bg-opacity: 1;
-      color: #b54708;
-      background-color: #fffaeb !important;
+      color: #a16207;
+      background-color: #fef3c7 !important;
+    }
+
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      border-radius: 12px;
+    }
+
+    body.dark-mode .loading-overlay {
+      background: rgba(0, 0, 0, 0.8);
     }
   </style>
 </head>
 
 <body>
   <!-- Sidebar -->
-  <div class="sidebar" id="sidebar">
+  <div class="sidebar" id="sidebar" aria-label="Main navigation">
     <h4 class="text-dark text-center mb-4">Admin Dashboard</h4>
-    <a href="#" class="active"><i class="fa-solid fa-house me-2"></i><span>Dashboard</span></a>
-    <a href="#"><i class="fa-solid fa-user me-2"></i><span>Users</span></a>
-    <a href="#"><i class="fa-solid fa-cart-shopping me-2"></i><span>Products</span></a>
-    <a href="#"><i class="fa-solid fa-gear me-2"></i><span>Settings</span></a>
-    <a href="#"><i class="fa-solid fa-right-from-bracket me-2"></i><span>Logout</span></a>
+    <a href="#" class="active" aria-current="page"><i class="fa-solid fa-house me-2"></i><span>Dashboard</span><span
+        class="tooltip-text">Dashboard</span></a>
+    <a href="#"><i class="fa-solid fa-user me-2"></i><span>Users</span><span class="tooltip-text">Users</span></a>
+    <a href="#"><i class="fa-solid fa-cart-shopping me-2"></i><span>Products</span><span
+        class="tooltip-text">Products</span></a>
+    <a href="#"><i class="fa-solid fa-gear me-2"></i><span>Settings</span><span class="tooltip-text">Settings</span></a>
+    <a href="#"><i class="fa-solid fa-right-from-bracket me-2"></i><span>Logout</span><span
+        class="tooltip-text">Logout</span></a>
   </div>
 
   <!-- Main Content -->
   <div class="content" id="content">
     <!-- Top Navbar -->
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg" aria-label="Top navigation">
       <div class="container-fluid">
-        <button class="btn me-2" type="button" id="sidebarToggle">
+        <button class="btn me-2" type="button" id="sidebarToggle" aria-label="Toggle sidebar">
           <i class="fa-solid fa-bars"></i>
         </button>
         <div class="navbar-brand">Admin Dashboard</div>
@@ -355,7 +385,7 @@
                 <li>
                   <div class="dropdown-item">
                     <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                      <input class="form-check-input" type="checkbox" id="darkModeToggle" aria-label="Toggle dark mode">
                       <label class="form-check-label" for="darkModeToggle">Dark Mode</label>
                     </div>
                   </div>
@@ -371,46 +401,51 @@
     <div class="container-fluid mt-4">
       <div class="row">
         <div class="col-12 col-md-6 col-lg-3">
-          <div class="card p-3 mb-4">
-            <h5>Total Users</h5>
-            <h3>1,234</h3>
-            <p class="text-success"><i class="fa-solid fa-arrow-up me-1"></i> 12% from last month</p>
+          <div class="card p-4 mb-4">
+            <h5 class="fw-semibold">Total Users</h5>
+            <h3 class="fw-bold">1,234</h3>
+            <p class="text-success mb-0"><i class="fa-solid fa-arrow-up me-1"></i> 12% from last month</p>
           </div>
         </div>
         <div class="col-12 col-md-6 col-lg-3">
-          <div class="card p-3 mb-4">
-            <h5>Revenue</h5>
-            <h3>$45,678</h3>
-            <p class="text-success"><i class="fa-solid fa-arrow-up me-1"></i> 8% from last month</p>
+          <div class="card p-4 mb-4">
+            <h5 class="fw-semibold">Revenue</h5>
+            <h3 class="fw-bold">$45,678</h3>
+            <p class="text-success mb-0"><i class="fa-solid fa-arrow-up me-1"></i> 8% from last month</p>
           </div>
         </div>
         <div class="col-12 col-md-6 col-lg-3">
-          <div class="card p-3 mb-4">
-            <h5>Orders</h5>
-            <h3>567</h3>
-            <p class="text-danger"><i class="fa-solid fa-arrow-down me-1"></i> 5% from last month</p>
+          <div class="card p-4 mb-4">
+            <h5 class="fw-semibold">Orders</h5>
+            <h3 class="fw-bold">567</h3>
+            <p class="text-danger mb-0"><i class="fa-solid fa-arrow-down me-1"></i> 5% from last month</p>
           </div>
         </div>
         <div class="col-12 col-md-6 col-lg-3">
-          <div class="card p-3 mb-4">
-            <h5>Visitors</h5>
-            <h3>9,876</h3>
-            <p class="text-success"><i class="fa-solid fa-arrow-up me-1"></i> 15% from last month</p>
+          <div class="card p-4 mb-4">
+            <h5 class="fw-semibold">Visitors</h5>
+            <h3 class="fw-bold">9,876</h3>
+            <p class="text-success mb-0"><i class="fa-solid fa-arrow-up me-1"></i> 15% from last month</p>
           </div>
         </div>
       </div>
 
       <!-- Data Table -->
-      <div class="card p-3">
-        <h5>Recent Transactions</h5>
-        <table id="transactionsTable" class="table table-bordered" style="width: 100%;">
+      <div class="card p-4 position-relative">
+        <h5 class="fw-semibold">Recent Transactions</h5>
+        <div class="loading-overlay" id="tableLoading" style="display: none;">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+        <table id="transactionsTable" class="table table-hover" style="width: 100%;">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Customer</th>
-              <th>Date</th>
-              <th>Amount</th>
-              <th>Status</th>
+              <th scope="col">ID</th>
+              <th scope="col">Customer</th>
+              <th scope="col">Date</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -440,8 +475,13 @@
       </div>
 
       <!-- Chart Example -->
-      <div class="card p-3 mt-4">
-        <h5>Monthly Sales</h5>
+      <div class="card p-4 mt-4 position-relative">
+        <h5 class="fw-semibold">Monthly Sales</h5>
+        <div class="loading-overlay" id="chartLoading" style="display: none;">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
         <canvas id="salesChart" height="100"></canvas>
       </div>
     </div>
@@ -576,7 +616,11 @@
         responsive: true,
         pageLength: 5,
         lengthMenu: [5, 10, 25, 50],
-        order: [[2, 'desc']] // Sort by Date column descending
+        order: [[2, 'desc']],
+        language: {
+          search: '<i class="fa-solid fa-magnifying-glass me-2"></i>',
+          searchPlaceholder: 'Search transactions...'
+        }
       });
     });
   </script>
